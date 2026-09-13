@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>标准影视剧本模板 · Screenplay Template</title>
+<style>
+  :root {
+    --page-bg: #e8e6e1;
+    --paper: #ffffff;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a48;
+    --accent: #8b6f47;
+    --note-bg: #fdf6e3;
+    --note-border: #d9c98a;
+    --mono: "Courier New", "Courier Prime", Courier, "Noto Sans Mono CJK SC", monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--page-bg);
+    font-family: var(--mono);
+    color: var(--ink);
+    line-height: 1.5;
+    padding: 40px 16px 80px;
+  }
+
+  /* ============ 剧本页面（模拟标准纸张） ============ */
+  .page {
+    background: var(--paper);
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto 48px;
+    padding: 72px 88px 72px 110px; /* 左侧留白更宽：装订线 */
+    box-shadow: 0 2px 12px rgba(0,0,0,.18), 0 12px 40px rgba(0,0,0,.10);
+    border-radius: 2px;
+    position: relative;
+  }
+  /* 装订孔 */
+  .page::before, .page::after {
+    content: "";
+    position: absolute;
+    left: 34px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--page-bg);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.25);
+  }
+  .page::before { top: 25%; }
+  .page::after  { top: 70%; }
+
+  .page-num {
+    position: absolute;
+    top: 36px; right: 88px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .page-num::after { content: "."; }
+
+  /* ============ 标题页 ============ */
+  .title-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 900px;
+    text-align: center;
+  }
+  .title-page .work-title {
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: .35em;
+    margin-bottom: 6px;
+  }
+  .title-page .work-title-en {
+    font-size: 14px;
+    letter-spacing: .2em;
+    color: var(--ink-soft);
+    margin-bottom: 60px;
+  }
+  .title-page .byline { font-size: 15px; margin-bottom: 10px; }
+  .title-page .author { font-size: 17px; font-weight: bold; margin-bottom: 120px; }
+  .title-page .draft-info {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 2;
+  }
+  .title-page .contact {
+    position: absolute;
+    left: 110px; bottom: 72px;
+    text-align: left;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.9;
+  }
+
+  /* ============ 剧本元素 ============ */
+  .scene-heading {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 28px 0 18px;
+    letter-spacing: .05em;
+  }
+  .scene-heading .scene-no { margin-right: 12px; }
+  .scene-heading .ie { margin-right: 10px; }
+  .scene-heading .time::before { content: " — "; }
+
+  .action {
+    margin: 14px 0;
+    text-align: justify;
+  }
+
+  .character {
+    margin: 22px 0 0 180px; /* 居中偏右：行业标准缩进 */
+    font-weight: bold;
+    letter-spacing: .15em;
+  }
+  .parenthetical {
+    margin: 0 0 0 140px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .dialogue {
+    margin: 0 60px 0 100px;
+    text-align: justify;
+  }
+
+  .transition {
+    text-align: right;
+    margin: 26px 0;
+    font-weight: bold;
+  }
+
+  .dual-note {
+    margin: 10px 0 0 180px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  /* ============ 批注（模板说明，可整块删除） ============ */
+  .annot {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--note-bg);
+    border-left: 3px solid var(--note-border);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin: 12px 0 12px -30px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #6b5b2e;
+  }
+  .annot b { color: #54471f; }
+
+  .divider {
+    border: none;
+    border-top: 1px dashed #c9c6bd;
+    margin: 40px 0;
+  }
+
+  /* ============ 说明卡片（纸外） ============ */
+  .guide {
+    max-width: 760px;
+    margin: 0 auto 32px;
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #fbfaf7;
+    border: 1px solid #ddd9cf;
+    border-radius: 14px;
+    padding: 24px 28px;
+  }
+  .guide h1 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .guide .sub { font-size: 13px; color: #77746b; margin-bottom: 16px; }
+  .guide table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .guide th, .guide td {
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid #e8e4da;
+    vertical-align: top;
+  }
+  .guide th { color: #55524a; font-weight: 600; white-space: nowrap; }
+  .guide td .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 12px;
+    background: #efede6;
+    border-radius: 5px;
+    padding: 1px 8px;
+  }
+
+  /* ============ 打印：只留剧本本身 ============ */
+  @media print {
+    body { background: #fff; padding: 0; }
+    .guide, .annot { display: none !important; }
+    .page { box-shadow: none; max-width: none; margin: 0; page-break-after: always; }
+    .page::before, .page::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= 使用说明（打印时自动隐藏） ================= -->
+<div class="guide">
+  <h1>标准影视剧本模板</h1>
+  <div class="sub">对标好莱坞行业排版 · Courier 等宽字体 · 一页 ≈ 一分钟成片 · 黄色批注块与卡片打印时自动隐藏</div>
+  <table>
+    <tr><th>场景标题</th><td><span class="tag">场号 + 内景/外景 · 地点 — 时间</span></td><td>换地点或换时间必须开新场</td></tr>
+    <tr><th>动作描述</th><td><span class="tag">.action</span></td><td>现在时、短句；只写摄影机能拍到的；角色首出场名字加粗/大写</td></tr>
+    <tr><th>角色名</th><td><span class="tag">.character</span></td><td>居中偏右（约 3.7 英寸缩进），加宽字距</td></tr>
+    <tr><th>括号提示</th><td><span class="tag">.parenthetical</span></td><td>写"怎么说"，能演出来就不写，少用</td></tr>
+    <tr><th>台词</th><td><span class="tag">.dialogue</span></td><td>紧随角色名下方，不加引号</td></tr>
+    <tr><th>转场</th><td><span class="tag">.transition</span></td><td>右对齐：切至: / 淡入: / 淡出.，现代剧本尽量少用</td></tr>
+    <tr><th>页码</th><td><span class="tag">.page-num</span></td><td>右上角，数字后加一点，标题页不编页码</td></tr>
+  </table>
+</div>
+
+<!-- ================= 第 0 页：标题页 ================= -->
+<div class="page title-page">
+  <div class="work-title">剧 名</div>
+  <div class="work-title-en">THE TITLE</div>
+  <div class="byline">编剧</div>
+  <div class="author">你的名字</div>
+  <div class="draft-info">
+    第 一 稿<br>
+    2026 年 9 月
+  </div>
+  <div class="contact">
+    联系方式<br>
+    邮箱：name@example.com<br>
+    电话：138-0000-0000
+  </div>
+</div>
+
+<!-- ================= 第 1 页：示例场（可整页删除） ================= -->
+<div class="page">
+  <div class="page-num">1</div>
+
+  <div class="annot"><b>【说明】</b>本页是格式示范，讲解每个元素的写法。正式使用时整页删除，从下一页的空白模板开始写。所有黄色批注打印时自动隐藏。</div>
+
+  <div class="annot"><b>淡入</b>是传统开场转场，右对齐。</div>
+  <div class="transition">淡入:</div>
+
+  <div class="annot"><b>场景标题</b>：场号 + 内景/外景 · 地点 — 时间，一行写完，加粗。换地点或换时间 = 开新场。</div>
+  <div class="scene-heading">
+    <span class="scene-no">1.</span><span class="ie">内景</span> · 出租屋厨房<span class="time">夜</span>
+  </div>
+
+  <div class="annot"><b>动作描述</b>：现在时、短句、只写能拍到的。角色首次出场名字加粗（美式格式为全大写）。</div>
+  <p class="action">
+    厨房里只剩一盏暖黄的灯。冰箱门虚掩着，嗡嗡低鸣。<b>我</b>（25 岁，T 恤反穿）盯着冷藏室——最后一盒草莓牛奶。
+  </p>
+  <p class="action">
+    一只涂着卡通创可贴的手从画面外伸进来，按在牛奶盒上。是<b>小七</b>（24 岁，抱着半个西瓜）。
+  </p>
+
+  <div class="annot"><b>角色名</b>居中偏右；<b>括号提示</b>写语气和附带动作；<b>台词</b>不加引号。</div>
+  <div class="character">小 七</div>
+  <div class="parenthetical">(护食地)</div>
+  <p class="dialogue">你看什么看，那是我的。</p>
+
+  <div class="character">我</div>
+  <div class="parenthetical">(举起购物小票)</div>
+  <p class="dialogue">小票上写的是我的名字。</p>
+
+  <p class="action">小七愣住，默默把创可贴手缩了回去。</p>
+
+  <div class="annot"><b>转场</b>右对齐。现代剧本只在确需强调时使用，日常换场直接写下一个场景标题即可。</div>
+  <div class="transition">切至:</div>
+
+  <div class="scene-heading">
+    <span class="scene-no">2.</span><span class="ie">内景</span> · 出租屋客厅<span class="time">夜（稍后）</span>
+  </div>
+
+  <p class="action">两人并排坐在沙发上，草莓牛奶插着两根吸管。</p>
+
+  <div class="character">小 七</div>
+  <div class="parenthetical">(小声)</div>
+  <p class="dialogue">……一人一口，谁也不许多喝。</p>
+
+  <div class="transition">淡出.</div>
+</div>
+
+<!-- ================= 第 2 页：空白模板（复制此页写正文） ================= -->
+<div class="page">
+  <div class="page-num">2</div>
+
+  <div class="annot"><b>【用法】</b>复制本页结构往下写：每换一个地点/时间开一个新场景标题，动作段、角色名、括号提示、台词按示例缩进套 class 即可。</div>
+
+  <div class="scene-heading">
+    <span class="scene-no">场号.</span><span class="ie">内景/外景</span> · 地点<span class="time">日/夜</span>
+  </div>
+
+  <p class="action">动作描述：现在时、短句，只写摄影机能拍到、麦克风能录到的内容。角色首次出场时名字加粗并带一句极简人设。</p>
+
+  <div class="character">角色名</div>
+  <div class="parenthetical">(语气或附带动作，可省)</div>
+  <p class="dialogue">台词写在这里，不加引号。</p>
+
+  <div class="character">另一角色</div>
+  <p class="dialogue">没有括号提示时，台词直接跟在角色名下方。</p>
+
+  <p class="action">两句台词之间，用一行动作描述交代反应和场面调度。</p>
+
+  <div class="transition">切至:</div>
+
+  <div class="scene-heading">
+    <span class="scene-no">场号.</span><span class="ie">内景/外景</span> · 新地点<span class="time">时间</span>
+  </div>
+
+  <p class="action">下一场从这里开始。</p>
+</div>
+
+</body>
+</html>
